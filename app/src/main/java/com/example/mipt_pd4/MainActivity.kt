@@ -8,17 +8,19 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room.databaseBuilder
+import androidx.room.Room
 import com.example.mipt_pd4.database.AppDatabase
 import com.example.mipt_pd4.database.Note
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var notesList: ListView
     private lateinit var db: AppDatabase
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -28,27 +30,38 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.materialToolbar))
 
-        // Initialize the database in the onCreate method
-        db = databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "notes"
-        ).build()
+        notesList = findViewById<ListView>(R.id.notesList)
 
-        val notesList = findViewById<ListView>(R.id.notesList)
+        // Initialize the database
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "note"
+        ).build()
+    }
 
         // Use Kotlin coroutines to perform the database query on a background thread
-        GlobalScope.launch(Dispatchers.IO) {
-            val noteDao = db.noteDao()
-            val notes: List<Note> = noteDao.getAll()
+        @OptIn(DelicateCoroutinesApi::class)
+        override fun onResume() {
+            super.onResume()
 
-            // Update the UI with the results on the main thread
-            launch(Dispatchers.Main) {
-                // Create an ArrayAdapter and set it to the ListView
-                val adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, notes)
-                notesList.adapter = adapter
+            // Use Kotlin coroutines to perform the database query on a background thread
+            GlobalScope.launch(Dispatchers.IO) {
+                val noteDao = db.noteDao()
+                val notes: List<Note> = noteDao.getAll()
+
+                // Update the UI with the results on the main thread
+                withContext(Dispatchers.Main) {
+                    // Create an ArrayAdapter and set it to the ListView
+                    val adapter = ArrayAdapter(
+                        this@MainActivity,
+                        R.layout.list_item,
+                        R.id.noteNameTextView,
+                        notes.map { it.name }
+                    )
+                    notesList.adapter = adapter
+                }
             }
         }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -57,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle item selection.
+        // Handle options item selection.
         return when (item.itemId) {
             R.id.add_note -> {
                 val intent = Intent(this, AddNoteActivity::class.java)
