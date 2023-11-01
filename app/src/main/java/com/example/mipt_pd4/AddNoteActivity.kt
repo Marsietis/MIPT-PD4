@@ -17,6 +17,8 @@ class AddNoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
 
+        setSupportActionBar(findViewById(R.id.materialToolbar))
+
         val noteName = findViewById<EditText>(R.id.noteName)
         val noteContent = findViewById<EditText>(R.id.noteContent)
         val saveNoteBtn = findViewById<Button>(R.id.saveNote)
