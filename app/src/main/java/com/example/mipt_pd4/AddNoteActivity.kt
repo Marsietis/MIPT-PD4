@@ -41,7 +41,6 @@ class AddNoteActivity : AppCompatActivity() {
                 )
                 // Insert the note in a background thread
                 GlobalScope.launch(Dispatchers.IO) {
-                    db.clearAllTables()
                     noteDao.insertAll(note)
                 }
 
