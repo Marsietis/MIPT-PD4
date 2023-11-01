@@ -2,6 +2,7 @@ package com.example.mipt_pd4
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import com.example.mipt_pd4.database.DatabaseInitializer
@@ -16,6 +17,7 @@ class AddNoteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_note)
+        Log.d("AddNoteActivity", "onCreate")
 
         setSupportActionBar(findViewById(R.id.materialToolbar))
 
@@ -40,6 +42,7 @@ class AddNoteActivity : AppCompatActivity() {
                 // Insert the note in a background thread
                 GlobalScope.launch(Dispatchers.IO) {
                     noteDao.insertAll(note)
+                    Log.d("AddNoteActivity", "Inserted note: $note")
                 }
 
                 finish()

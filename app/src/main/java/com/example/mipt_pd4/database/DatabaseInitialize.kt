@@ -1,6 +1,7 @@
 package com.example.mipt_pd4.database
 
 import android.content.Context
+import android.util.Log
 import androidx.room.Room
 
 object DatabaseInitializer {
@@ -12,6 +13,7 @@ object DatabaseInitializer {
                 context.applicationContext,
                 AppDatabase::class.java, "note"
             ).build()
+            Log.i("DatabaseInitializer", "Database was created")
         }
         return db!!
     }

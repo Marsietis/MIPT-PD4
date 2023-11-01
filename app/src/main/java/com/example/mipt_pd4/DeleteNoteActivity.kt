@@ -2,6 +2,7 @@ package com.example.mipt_pd4
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -23,6 +24,7 @@ class DeleteNoteActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_delete_note)
+        Log.d("DeleteNoteActivity", "onCreate")
 
         setSupportActionBar(findViewById(R.id.materialToolbar))
 
@@ -48,9 +50,9 @@ class DeleteNoteActivity : AppCompatActivity() {
                 if (noteToDelete != null) {
                     // Delete the note
                     noteDao.delete(noteToDelete)
+                    Log.d("DeleteNoteActivity", "Deleted note with name: $noteName")
                 }
             }
-
             finish()
         }
     }
@@ -58,6 +60,7 @@ class DeleteNoteActivity : AppCompatActivity() {
     @OptIn(DelicateCoroutinesApi::class)
     override fun onResume() {
         super.onResume()
+        Log.d("DeleteNoteActivity", "onResume")
 
         GlobalScope.launch(Dispatchers.IO) {
             val noteDao = db.noteDao()
@@ -68,6 +71,7 @@ class DeleteNoteActivity : AppCompatActivity() {
                 noteNamesAdapter.clear()
                 noteNamesAdapter.addAll(noteNames)
                 noteNamesAdapter.notifyDataSetChanged()
+                Log.d("DeleteNoteActivity", "Updated note names")
             }
         }
     }
