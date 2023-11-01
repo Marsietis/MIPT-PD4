@@ -6,4 +6,6 @@
     <string name="enter_the_content_of_the_note">Enter the content of the note</string>
     <string name="save_note">Save note</string>
     <string name="delete_note">Delete note</string>
+    <string name="note_s_name">Note\'s name</string>
+    <string name="note_s_content">Note\'s content</string>
 </resources>

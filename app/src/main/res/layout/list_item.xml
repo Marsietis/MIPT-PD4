@@ -9,20 +9,23 @@
         android:id="@+id/noteNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:fontFamily="@font/inter_bold"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="8dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/noteContentTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:fontFamily="@font/inter"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="8dp" />
+        android:paddingBottom="8dp"
+        android:textSize="18sp" />
 
 </LinearLayout>
