@@ -11,12 +11,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room.databaseBuilder
 import com.example.mipt_pd4.database.AppDatabase
 import com.example.mipt_pd4.database.Note
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var db: AppDatabase
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,18 +35,18 @@ class MainActivity : AppCompatActivity() {
         ).build()
 
         val notesList = findViewById<ListView>(R.id.notesList)
-        val noteDao = db.noteDao()
 
-        val notes: List<Note> = noteDao.getAll()
+        // Use Kotlin coroutines to perform the database query on a background thread
+        GlobalScope.launch(Dispatchers.IO) {
+            val noteDao = db.noteDao()
+            val notes: List<Note> = noteDao.getAll()
 
-        val adapter = ArrayAdapter(this, R.layout.list_item, notes)
-        notesList.adapter = adapter
-        notesList.setOnItemClickListener { _, _, position, _ ->
-            val selectedNote = notes[position]
-            // Handle the selected note, e.g., show a dialog with the name and content
-            val name = selectedNote.name
-            val content = selectedNote.content
-            // Display or process the name and content as needed
+            // Update the UI with the results on the main thread
+            launch(Dispatchers.Main) {
+                // Create an ArrayAdapter and set it to the ListView
+                val adapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, notes)
+                notesList.adapter = adapter
+            }
         }
     }
 
