@@ -10,6 +10,9 @@ interface NoteDao {
     @Query("SELECT * FROM note")
     fun getAll(): List<Note>
 
+    @Query("SELECT * FROM note WHERE name = :name")
+    fun getNoteByName(name: String): Note?
+
     @Insert
     fun insertAll(vararg note: Note)
 
