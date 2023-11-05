@@ -8,4 +8,6 @@
     <string name="delete_note">Delete note</string>
     <string name="note_s_name">Note\'s name</string>
     <string name="note_s_content">Note\'s content</string>
+    <string name="enter_the_name_of_the_note">Enter the name of the note:</string>
+    <string name="enter_the_note_s_content">Enter the note\'s content:</string>
 </resources>
